@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../zustand/store';
 import UserList from '../Userlist/UserList';
+// this should be removed later - Brad is testing out some components
+import UpdatesUser from '../UpdatesUser/UpdatesUser';
+import DesignsList from '../DesignsList/DesignsList';
+
+// end of testing imports
 
 function LoginPage() {
-  const [username, setUsername] = useState('');
+  const [login_email, setLoginEmail] = useState('');
   const [password, setPassword] = useState('');
   const logIn = useStore((state) => state.logIn)
   const errorMessage = useStore((state) => state.authErrorMessage);
@@ -20,7 +25,7 @@ function LoginPage() {
     event.preventDefault();
 
     logIn({
-      username: username,
+      login_email: login_email,
       password: password,
     })
   };
@@ -28,15 +33,19 @@ function LoginPage() {
   return (
     <>
       <h2>Login Page</h2>
+      {/* Brad has commented out the userlist component because something is screwey with the DB */}
       <UserList/>
+      <DesignsList/>
+      <UpdatesUser/>
+
       <form onSubmit={handleLogIn}>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="login_email">Email:</label>
         <input
-          type="text"
-          id="username"
+          type="email"
+          id="login_email"
           required
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={login_email}
+          onChange={(e) => setLoginEmail(e.target.value)}
         />
         <label htmlFor="password">Password:</label>
         <input

@@ -51,17 +51,21 @@ passport.deserializeUser((id, done) => {
 // is made to POST /api/user/login.
 passport.use(
   'local',
-  new LocalStrategy((username, password, done) => {
+  new LocalStrategy({
+    usernameField: 'login_email',
+    passwordField: 'password'
+  },
+  (login_email, password, done) => {
     const sqlText = `
       SELECT * FROM "user"
-        WHERE username = $1;
+        WHERE login_email = $1;
     `;
-    const sqlValues = [username];
+    const sqlValues = [login_email];
 
     pool.query(sqlText, sqlValues)
       .then((dbRes) => {
         const user = dbRes && dbRes.rows && dbRes.rows[0];
-        
+
         if (user && encryptLib.comparePassword(password, user.password)) {
           // The request body's password has been hashed and matches the stored
           // hashed password. AKA: Login was successful! Now, we use Passport's

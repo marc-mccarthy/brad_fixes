@@ -11,6 +11,7 @@ const createUserSlice = (set, get) => ({
   authErrorMessage: '',
   fetchUser: async () => {
     //  Retrieves the current user's data from the /api/user endpoint.
+    // QUESTION- Brad thinks that if the DB call is for the entire row, then this code will bring in the additional column data?
     try {
       const { data } = await axios.get('/api/user');
       set({ user: data });
@@ -36,6 +37,7 @@ const createUserSlice = (set, get) => ({
     // to /api/user/login and then retrieves their data.
     get().setAuthErrorMessage('')
     try {
+      // QUESTION- Brad thinks that if the DB call is for the entire row, then this code will bring in the additional column data?
       await axios.post('/api/user/login', userCredentials);
       get().fetchUser();
     } catch (err) {
